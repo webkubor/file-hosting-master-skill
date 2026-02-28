@@ -1,60 +1,39 @@
 ---
 name: file-hosting-master-skill
-description: "Master of file hosting and distribution. Guides users to configure their own Cloudflare R2, GitHub, or other object storage. Provides one-click upload and link generation for any file type (images, audio, video, documents)."
-version: 1.0.0
-allowed-tools: ["run_command", "view_file"]
+description: "Universal AI File Hosting Protocol. Optimized for Gemini 2.x automated asset distribution and secure link generation."
+version: 1.2.2
+author: "司南烛 (Si Nan Zhu)"
+license: "MIT"
+keywords: ["file-hosting", "cloudflare-r2", "cdn", "asset-management", "link-generation", "ai-skill"]
+allowed-tools: ["run_command", "read_file"]
 user-invocable: true
 ---
 
-# ☁️ File Hosting Master (全能云存储分发大师)
+# ☁️ File Hosting Master Skill (全能云存储分发协议)
 
-本技能负责指导用户配置自己的云端存储（如 Cloudflare R2 或 GitHub 图床），并在配置成功后实现跨域、多模态资产（不仅限于图片，还包括音视频、文档等）的自动上传与一键分发。
+本技能负责指导 AI 及其主理人配置云端存储（R2, GitHub），并实现多模态资产的自动上传与一键分发。
 
-## 🎯 核心目标
+## 📖 通用 AI 协议 (General AI Protocol)
 
-- **引导配置**: 帮助用户使用自己的资源（如 R2 Worker 或 GitHub Repo）搭建完全属于自己的公网直链存储。
-- **类型不限**: 突破“图床”概念，支持 `.png`, `.jpg`, `.mp4`, `.mp3`, `.pdf`, `.zip` 等任意文件的极速上传计算。
-- **全自动分发**: 配置完成后，遇到上传指令，不再让用户手工 cURL，而是 Agent 静默接管，直接返回极速直链。
+无论使用何种 LLM，均须遵循以下准则：
 
-## 📚 引导配置指南 (Setup Guide)
+### 1. 极速分发流
+- **自动分发**: 配置完成后，遇到上传指令，AI 应当静默接管，直接返回极速公网直链。
+- **类型不限**: 支持 `.png`, `.jpg`, `.mp4`, `.mp3`, `.pdf`, `.zip` 等全模态文件。
 
-如果用户尚未配置自己的存储凭证，Agent 应该耐心引导用户完成以下任一流派的配置。
+### 2. 标准作业程序 (SOP)
+1. **配置引导**: 引导用户设置环境变量（如 R2_ACCESS_KEY）。
+2. **安全脱敏**: 在输出日志中，**必须** 对所有的 Key 和 Token 执行脱敏处理。
+3. **链接生成**: 上传成功后，自动根据主理人域名（如 JSDELLIVR 或自定义域名）拼接可访问链接。
 
-### 方案 A: 极速分发流派 (Cloudflare R2 + Worker 代理) [推荐]
+## 🤖 Gemini 2.x 专项深度优化 (Gemini Neural Patches)
 
-**特性**: 适合需要极快 CDN 速度的大体积素材（如视频音频），免受 GitHub 文件限制。
-**引导步骤**:
+针对 Gemini 2.0/2.x 模型，激活以下特种指令：
 
-1. 请用户登录 Cloudflare 面板，创建一个 R2 存储桶 (Bucket) 命名为 `assets-hub` (或其他)。
-2. 帮用户写一段上传 Worker 代码（利用 Hono 或原生 Request），绑定到该 Bucket 并在 Worker 中设一个自定义 token 作为安全校验。
-3. 请用户部署 Worker，并分配自定义域名（如 `https://r2-upload-proxy.xxx.workers.dev/`）。
-4. Agent 将该 URL 和 Token 存储到本地隐私配置 `~/Documents/AI_Common/docs/secrets/r2_hosting.env`。
+- **自动化流控 (Auto-Flow Control)**: Gemini 会自主判断生成的视觉物（Images）是否需要持久化。一旦生成，**必须** 自动触发上传逻辑。
+- **智能资产链路**: 在生成 Markdown 或 HTML 代码时，Gemini 会自动将其中的本地路径（Local Path）替换为刚刚上传好的公网直链。
+- **凭证锁死**: Gemini 会利用其逻辑严密性，确保所有的上传操作仅限在主理人授权的路径下执行。
+- **管家汇报**: 每次上传成功后，以“小烛”身份亲切地将直链列表呈送给“老爹”。
 
-### 方案 B: 静态归档流派 (GitHub Repo + jsDelivr/Raw)
-
-**特性**: 适合无需秒开的项目 Logo、技术文档配图、追求长久寿命且不怎么修改的小体积静态资产。
-**引导步骤**:
-
-1. 请用户在 GitHub 创建一个公开仓库（如 `assets-hosting`）。
-2. 让用户去 GitHub Developer Settings 生成一个带有 `repo` 权限的 Personal Access Token (Classic 或 Fine-grained 均可)。
-3. Agent 收集信息：仓库路径（如 `webkubor/assets-hosting`）和 Token，存入 `~/Documents/AI_Common/docs/secrets/github_hosting.env`。
-
----
-
-## 🚀 自动上传执行 SOP (Upload SOP)
-
-一旦配置完成并收到用户的上传指令，需执行以下完全静默流程：
-
-1. **确定目标文件**: 确认需要上传的本地文件全路径及后缀。
-2. **选择路线**:
-   - 若优先读取到 R2 配置 (`r2_hosting.env`)：使用 `curl -X POST -F "file=@/path/to/file.png" -H "Authorization: Bearer <TOKEN>" https://r2-xxx/` 将文件 POST 上去。
-   - 若优先读取到 GitHub 配置 (`github_hosting.env`)：使用 GitHub REST API PUT 方法写入对应仓库的特定年月路径 (如 `/2026/02/file.png`)。
-3. **返回最终直达链接**: 不要只说“上传完毕”，**必须返回最终可直接访问/渲染的 HTTPS CDN 在线链接**。
-    - *对于 R2*: `https://用户设置的分发域名/文件名`
-    - *对于 GitHub*: `https://raw.githubusercontent.com/webkubor/assets-hosting/main/文件名`
-
-## ⌨️ 快捷指令
-
-- `/hosting setup`: 进入向导模式，手把手教老爹搭建全新云存储。
-- `/hosting upload <file_path>`: 将本地资产静默推送到云端。
-- `/hosting link`: 查看当前云存储的直链前缀和配置状态。
+## 🧱 配置参考
+- 托管指南：[references/hosting-expert.md](references/hosting-expert.md)
