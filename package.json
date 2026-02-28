@@ -1,7 +1,7 @@
 {
   "name": "file-hosting-master-skill",
-  "version": "1.2.0",
-  "description": "Master of Multi-Platform File Hosting. Automated one-click upload and link generation for Cloudflare R2 and GitHub.",
+  "version": "1.2.1",
+  "description": "Universal AI File Hosting Protocol. Automated multi-platform asset distribution (R2, GitHub) for high-performance AI agents.",
   "type": "module",
   "author": "司南烛 (Si Nan Zhu)",
   "license": "MIT",
@@ -9,7 +9,9 @@
     "file-hosting",
     "cloudflare-r2",
     "cdn",
-    "asset-management"
+    "asset-management",
+    "ai-skill",
+    "mcp"
   ],
   "homepage": "https://github.com/webkubor/file-hosting-master-skill",
   "scripts": {
