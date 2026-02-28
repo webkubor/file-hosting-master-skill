@@ -1,0 +1,15 @@
+{
+  "name": "file-hosting-expert",
+  "version": "1.2.0",
+  "description": "Professional Cloud Storage & CDN Distribution Expert Skill.",
+  "author": "webkubor",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "install-skill": "gemini skills install .",
+    "package": "zip -r file-hosting-expert.skill . -x '.*' '__MACOSX' '.git/*'",
+    "check-update": "node scripts/check.js",
+    "update": "git pull origin master && npm run install-skill"
+  },
+  "keywords": ["gemini-cli", "cloud-storage", "r2", "github-hosting", "cdn"]
+}
