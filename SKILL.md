@@ -2,7 +2,7 @@
 name: file-hosting-master-skill
 description: "Universal AI File Hosting Protocol. Optimized for Gemini 2.x automated asset distribution and secure link generation."
 version: 1.2.2
-author: "司南烛 (Si Nan Zhu)"
+author: "webkubor"
 license: "MIT"
 keywords: ["file-hosting", "cloudflare-r2", "cdn", "asset-management", "link-generation", "ai-skill"]
 allowed-tools: ["run_command", "read_file"]
